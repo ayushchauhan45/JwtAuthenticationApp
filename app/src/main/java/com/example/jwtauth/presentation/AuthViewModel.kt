@@ -59,7 +59,7 @@ class AuthViewModel @Inject constructor (
             }
 
             is AuthEvent.SignIn -> {
-                signUp()
+                signIn()
             }
         }
     }
@@ -81,7 +81,7 @@ class AuthViewModel @Inject constructor (
         viewModelScope.launch {
             state = state.copy(isLoading = true)
             val result = authRepository.signIn(
-                username = state.signUpUsername,
+                username = state.signInUsername,
                 password = state.signInPassword
             )
             _authChannel.send(result)
@@ -92,10 +92,10 @@ class AuthViewModel @Inject constructor (
 
     fun authenticate() {
         viewModelScope.launch {
-            state = state.copy(isLoading = false)
+            state = state.copy(isLoading = true)
             val result = authRepository.authenticate()
             _authChannel.send(result)
-            state = state.copy(isLoading = true)
+            state = state.copy(isLoading = false)
         }
     }
 }
